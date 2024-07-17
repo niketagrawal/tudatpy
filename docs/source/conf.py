@@ -87,15 +87,28 @@ sys.path.insert(0, os.path.abspath("."))
 # )
 
 
-# Check if running inside a conda environment
-conda_prefix = os.getenv("CONDA_PREFIX")
-print("conda_prefix:", conda_prefix)
-if conda_prefix:
-    # Construct the path to the site-packages for the current conda environment
-    site_packages_path = os.path.join(conda_prefix, "lib", "python3.8", "site-packages")
-else:
-    # Fallback or error
-    raise EnvironmentError("This script requires a conda environment.")
+# # Check if running inside a conda environment
+# conda_prefix = os.getenv("CONDA_PREFIX")
+# print("conda_prefix:", conda_prefix)
+# if conda_prefix:
+#     # Construct the path to the site-packages for the current conda environment
+#     site_packages_path = os.path.join(conda_prefix, "lib", "python3.8", "site-packages")
+# else:
+#     # Fallback or error
+#     raise EnvironmentError("This script requires a conda environment.")
+
+import importlib.util
+
+
+# Find the path where the package is installed
+tudatpy_path = importlib.util.find_spec("tudatpy").origin
+
+# Extract the directory up to site-packages
+site_packages_path = os.path.dirname(os.path.dirname(tudatpy_path))
+
+# Print the path
+print(f"site-packages path is: {site_packages_path}")
+
 
 # Insert the site-packages path to sys.path
 sys.path.insert(0, os.path.abspath(site_packages_path))

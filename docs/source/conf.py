@@ -86,12 +86,27 @@ sys.path.insert(0, os.path.abspath("."))
 #     )
 # )
 
-sys.path.insert(
-    0,
-    os.path.abspath(
-        "/home/nagrawal/miniconda3/envs/tudatpy-docs-readthedocs/lib/python3.8/site-packages"
-    ),
-)
+
+# Check if running inside a conda environment
+conda_prefix = os.getenv("CONDA_PREFIX")
+print("conda_prefix:", conda_prefix)
+if conda_prefix:
+    # Construct the path to the site-packages for the current conda environment
+    site_packages_path = os.path.join(conda_prefix, "lib", "python3.8", "site-packages")
+else:
+    # Fallback or error
+    raise EnvironmentError("This script requires a conda environment.")
+
+# Insert the site-packages path to sys.path
+sys.path.insert(0, os.path.abspath(site_packages_path))
+print("sys.path:", sys.path)
+
+# sys.path.insert(
+#     0,
+#     os.path.abspath(
+#         "/home/nagrawal/miniconda3/envs/tudatpy-docs-readthedocs/lib/python3.8/site-packages"
+#     ),
+# )
 
 
 # -- General configuration ------------------------------------------------
